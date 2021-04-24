@@ -1,25 +1,28 @@
+/* This is my custom data class for Tffevent */
 
 public class TffEvent {
-	private int id;
-	private String name;
-	private int age;
+	private int id; // Event ID
+	private String name; // Event Name
+	private String description; // Event Description
+	private String type; // Event Type (LowerCase)
+	private double priceAdult; // Adult Ticket Price
+	private double priceChild; // Child Ticket Price
+	private double priceConcession; // Concession Ticket Price
+	private int ticketsSold;
+	private int ticketLimit; // Event Ticket Limit
 	
-	public TffEvent() {
-		/* Initialize Variables in class where required */
-		this.id = 0;
-	}
-	
-	public boolean tffEventAdd (String name, String age) {
+	public TffEvent(String name, String description, String type, double priceAdult, 
+								double priceChild, double priceConcession, int ticketsSold, int ticketLimit) {
+		// Store Data
 		this.id = this.nextId();
 		this.name = name;
-	    
-		// Attempt to parseInt
-		try {
-	    	this.age = Integer.parseInt(age);
-	        return true;
-	    } catch (final NumberFormatException e) {
-	        return false;
-	    }
+		this.description = description;
+		this.type = type.toLowerCase();
+		this.priceAdult = priceAdult;
+		this.priceChild = priceChild;
+		this.priceConcession = priceConcession;
+		this.ticketsSold = ticketsSold;
+		this.ticketLimit = ticketLimit;
 	}
 	
 	/*
@@ -29,10 +32,37 @@ public class TffEvent {
 	private int nextId() {
 		return id++;
 	}
+	
+	public double getPrice(String ticketType) {
+		if (ticketType.toLowerCase().matches("child")) {
+			return priceChild;
+		} else if (ticketType.toLowerCase().matches("concession")) {
+			return priceConcession;
+		} else {
+			return priceAdult;
+		}		
+	}
 
+	public void incrementTicketsSold() {
+		this.ticketsSold++;
+	}
+	
+	public void reduceTicketsSold() {
+		this.ticketsSold--;
+	}
+	
+	public int getTicketsAvaliable() {
+		return ticketLimit - ticketsSold;
+	}
+	
 	/*
 	 * Setters and Getters
 	 */
+	
+	public int getId() {
+		return id;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -41,16 +71,60 @@ public class TffEvent {
 		this.name = name;
 	}
 
-	public int getAge() {
-		return age;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setAge(int age) {
-		this.age = age;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public int getId() {
-		return id;
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public double getPriceAdult() {
+		return priceAdult;
+	}
+
+	public void setPriceAdult(double priceAdult) {
+		this.priceAdult = priceAdult;
+	}
+
+	public double getPriceChild() {
+		return priceChild;
+	}
+
+	public void setPriceChild(double priceChild) {
+		this.priceChild = priceChild;
+	}
+
+	public double getPriceConcession() {
+		return priceConcession;
+	}
+
+	public void setPriceConcession(double priceConcession) {
+		this.priceConcession = priceConcession;
+	}
+	
+	public int getTicketsSold() {
+		return ticketsSold;
+	}
+
+	public void setTicketsSold(int ticketsSold) {
+		this.ticketsSold = ticketsSold;
+	}
+	
+	public int getTicketLimit() {
+		return ticketLimit;
+	}
+
+	public void setTicketLimit(int ticketLimit) {
+		this.ticketLimit = ticketLimit;
 	}
 	
 }
