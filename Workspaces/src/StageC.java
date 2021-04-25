@@ -14,7 +14,7 @@ public class StageC {
 	private static int nextEvent = 0;
 	
 	// Storage Array
-	private static TffEvent[] tffEvents;
+	private static TffExperienceEvent[] tffEvents;
 	
 	// Storage Array Tickets?
 	
@@ -32,7 +32,7 @@ public class StageC {
 		maxEvents = Integer.parseInt(userInput);
 		
 		// Init TffEvents using Max # of Events
-		tffEvents = new TffEvent[maxEvents];
+		tffEvents = new TffExperienceEvent[maxEvents];
 		
 		// Mark as initialized
 		initialized = true;
@@ -69,7 +69,17 @@ public class StageC {
 			case "5":
 				consoleBookingCreate();
 				displayMenu();
-				break;		
+				break;
+			
+			case "6":
+				consoleBookingRefund();
+				displayMenu();
+				break;
+				
+			case "7":
+				consoleBookingDisplay();
+				displayMenu();
+				break;
 				
 			/* Exit Application */
 			case "x":
@@ -89,7 +99,7 @@ public class StageC {
 		System.out.println("*************************");
 		System.out.println("*     Event Control     *");
 		System.out.println("*************************");
-		System.out.println("  1: Event - List");
+		System.out.println("  1: Event - List"); // Show Events
 		System.out.println("  2: Event - Create");
 		//System.out.println("  3: Event - Modify");
 		//System.out.println("  4: Event - Delete");
@@ -98,14 +108,15 @@ public class StageC {
 		System.out.println("*************************");
 		System.out.println("*        Booking        *");
 		System.out.println("*************************");
-		System.out.println("  5: Booking - Create");
-		System.out.println("  6: Booking - Refund");
-		System.out.println("  7: Booking - Show");
+		System.out.println("  5: Booking - Create"); // Create a Booking
+		System.out.println("  6: Booking - Refund") ; // Refund a Booking
+		System.out.println("  7: Booking - Show"); // Show Bookings 
 		System.out.println("");
 		System.out.println("  X: Exit");	
 	}
 	
 	public static void displayEvents() {
+		String userInput;
 		System.out.println("**** Event - List ****");
 		System.out.println(""); // Blank Line
 		
@@ -119,8 +130,12 @@ public class StageC {
 			 tffEvents[i].displayEvent();
 		 }
 		 
-		 System.out.format("+-----+------------+--------------------+--------------------+-----------+-----------+-----------+--------------+--------------+%n");
-		System.out.println(""); // Blank Line 
+		System.out.format("+-----+------------+--------------------+--------------------+-----------+-----------+-----------+--------------+--------------+%n");
+		System.out.println(""); // Blank Line
+		
+		System.out.print("Press [Enter] to continue");
+		userInput = consoleInput.nextLine();
+		
 	}
 	
 	// Input handler for creating TffEvents
@@ -149,17 +164,51 @@ public class StageC {
 			inputStorage[1] = consoleInput.nextLine();
 			System.out.println("");
 
-			System.out.print("Ticket Limit: ");
-			inputStorage[6] = Integer.parseInt(consoleInput.nextLine());
+			// Check if input string is decimal or integer (REGEX)
+			userInput = ""; // Reset userInput
+			while (!userInput.matches("^[0-9]+$") && !userInput.matches("^\\d+\\.\\d+")) {
+				System.out.print("Ticket Limit: ");
+				userInput = consoleInput.nextLine();
+			}
+			inputStorage[6] = Integer.parseInt(userInput);
 			System.out.println("");			
 			
-			System.out.println("Ticket Pricing: ");
-			System.out.print("  Adult: ");
-			inputStorage[2] = Double.parseDouble(consoleInput.nextLine());
-			System.out.print("  Child: ");
-			inputStorage[3] = Double.parseDouble(consoleInput.nextLine());
-			System.out.print("  Concession: ");
-			inputStorage[4] = Double.parseDouble(consoleInput.nextLine());
+			System.out.println("Ticket Pricing: ");			
+			// Check if input string is decimal or integer (REGEX)
+			userInput = ""; // Reset userInput
+			while (!userInput.matches("^[0-9]+$") && !userInput.matches("^\\d+\\.\\d+")) {
+				System.out.print("  Adult: ");
+				userInput = consoleInput.nextLine();
+				
+				if (!userInput.matches("^[0-9]+$") && !userInput.matches("^\\d+\\.\\d+")) {
+					System.out.println("Error: Expected whole number or whole number with decimals [1, 1.00]");
+				}
+			}
+			inputStorage[2] = Double.parseDouble(userInput);
+			
+			// Check if input string is decimal or integer (REGEX)
+			userInput = ""; // Reset userInput
+			while (!userInput.matches("^[0-9]+$") && !userInput.matches("^\\d+\\.\\d+")) {
+				System.out.print("  Child: ");
+				userInput = consoleInput.nextLine();
+				
+				if (!userInput.matches("^[0-9]+$") && !userInput.matches("^\\d+\\.\\d+")) {
+					System.out.println("Error: Expected whole number or whole number with decimals [1, 1.00]");
+				}
+			}
+			inputStorage[3] = Double.parseDouble(userInput);
+
+			// Check if input string is decimal or integer (REGEX)
+			userInput = ""; // Reset userInput
+			while (!userInput.matches("^[0-9]+$") && !userInput.matches("^\\d+\\.\\d+")) {			
+				System.out.print("  Concession: ");
+				userInput = consoleInput.nextLine();
+				
+				if (!userInput.matches("^[0-9]+$") && !userInput.matches("^\\d+\\.\\d+")) {
+					System.out.println("Error: Expected whole number or whole number with decimals [1, 1.00]");
+				}
+			}
+				inputStorage[4] = Double.parseDouble(userInput);
 			System.out.println("");
 
 			tffEvents[nextEvent] = new TffExperienceEvent((String) inputStorage[0], // Name
@@ -175,6 +224,7 @@ public class StageC {
 			nextEvent++;
 		}
 	}
+	
 	/* Method for Creating an Event Booking */
 	public static void consoleBookingCreate() {
 		String userInput;
@@ -189,11 +239,16 @@ public class StageC {
 
 		// Loop until we have a valid event id
 		while(!eventExists) {
-			System.out.print("Event ID: ");
-			userInput = consoleInput.nextLine().toLowerCase();
+			while (!userInput.matches("^[0-9]+$")) {
+				System.out.print("Event ID: ");
+				userInput = consoleInput.nextLine().toLowerCase();
+			}
 			eventID = Integer.parseInt(userInput);
 			eventExists = eventExists(eventID);
-			// Return event Title and ask for confirmation
+			userInput = "";
+			if (!eventExists) {
+				System.out.println("Error: Event Not Found!");
+			}
 		}
 		// Fetch OBJ using eventID and fetch pricing
 		TffExperienceEvent currentOBJ = (TffExperienceEvent) tffEvents[eventID];
@@ -211,8 +266,16 @@ public class StageC {
 		System.out.println("");
 		
 		// Request Number of Tickets
-		System.out.print("Number of Tickets Required: ");
-		userInput = consoleInput.nextLine().toLowerCase();
+		// make sure we only have digits
+		userInput = ""; // Reset userInput
+		while (!userInput.matches("^[0-9]+$")) {
+			System.out.print("Number of Tickets Required: ");
+			userInput = consoleInput.nextLine().toLowerCase();
+			
+			if (!userInput.matches("^[0-9]+$")) {
+				System.out.println("Error: Only whole numbers can be accepted!");
+			}
+		}
 		ticketsReq = Integer.parseInt(userInput);
 		
 		// Init Array
@@ -224,7 +287,7 @@ public class StageC {
 			// Loop to process tickets
 			ticketData[i][0] = Integer.toString(currentOBJ.getId());
 			
-			System.out.println("Ticket Type: [Adult, Child, Concession] ");
+			System.out.println("Ticket Type: [Adult, Child, Concession]");
 			ticketData[i][1] = consoleInput.nextLine().toLowerCase();
 			System.out.println("");
 			
@@ -246,15 +309,96 @@ public class StageC {
 		System.out.print("Press [Enter] to continue");
 		userInput = consoleInput.nextLine();
 	}
+	
+	/* Method for Refunding an Event Booking */
+	public static void consoleBookingRefund() {
+		String userInput = "";
+		String name;
+		int eventID = 0;
+		boolean result = false;
+		boolean eventExists = false;
+		
+		// Loop until we have a valid event id
+		while(!eventExists) {
+			while (!userInput.matches("^[0-9]+$")) {
+				System.out.print("Event ID: ");
+				userInput = consoleInput.nextLine().toLowerCase();
+			}
+			eventID = Integer.parseInt(userInput);
+			eventExists = eventExists(eventID);
+			userInput = "";
+			if (!eventExists) {
+				System.out.println("Error: Event Not Found!");
+			}
+		}
+		
+		System.out.println("Name/Attendee: ");
+		name = consoleInput.nextLine();
+		
+		result = tffEvents[eventID].unBookEvent(name);
+		
+		if (!result) {
+			System.out.println("Error: Refund Unsuccessful");
+		}
+		System.out.println("");
+	}
+
+	/* Method for Showing all Bookings for an event */
+	public static void consoleBookingDisplay() {
+		String userInput = "";
+		int eventID = 0;
+		boolean eventExists = false;
+		
+		System.out.println("**** Booking - List ****");
+		System.out.println(""); // Blank Line
+		
+		// Loop until we have a valid event id
+		while(!eventExists) {
+			while (!userInput.matches("^[0-9]+$")) {
+				System.out.print("Event ID: ");
+				userInput = consoleInput.nextLine().toLowerCase();
+			}
+			eventID = Integer.parseInt(userInput);
+			eventExists = eventExists(eventID);
+			userInput = "";
+			if (!eventExists) {
+				System.out.println("Error: Event Not Found!");
+			}
+		}
+		if (eventExists) {
+			System.out.println("");
+			System.out.println("****");
+			System.out.println("Event: " + tffEvents[eventID].getName());
+			System.out.println("Description: " + tffEvents[eventID].getDescription());
+			System.out.println("****");
+			System.out.println("");
+			
+			// Fancy Table B.S 
+			System.out.format("+--------------------+--------------------+-----------+%n");
+			System.out.format("| Name/Attendee      | Ticket Type        | Price     |%n");
+			System.out.format("+--------------------+--------------------+-----------+%n");
+			tffEvents[eventID].displayBookings();
+			System.out.format("+--------------------+--------------------+-----------+%n");
+			System.out.println("");
+			
+			System.out.print("Press [Enter] to continue");
+			userInput = consoleInput.nextLine();
+		}		
+	}
+
 
 	// Confirm or deny the existence of an eventID
 	public static boolean eventExists(int eventID) {
-		TffEvent currentOBJ = tffEvents[eventID];
-		
-		if ((currentOBJ == null)) {
+		if (eventID > tffEvents.length) {
 			return false;
-		} else { 
-			return true;
+		} else {
+			TffEvent currentOBJ = tffEvents[eventID];
+			
+			if ((currentOBJ == null)) {
+				return false;
+			} else { 
+				return true;
+			}
 		}
 	}	
 }
