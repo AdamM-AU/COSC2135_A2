@@ -57,7 +57,7 @@ public class TffExperienceEvent extends TffEvent {
 			System.out.println("");
 			System.out.println("+---------------------TICKET---------------------+");
 			System.out.println(" Attendee: " + name);
-			System.out.println(" Event: " + super.getName()  + "  [ID: " + this.id + " ]");
+			System.out.println(" Event: " + super.getName()  + "  [ ID: " + this.id + " ]");
 			System.out.println(" Ticket Type: " + capitalize(ticketType) + "  \t@ $" + 
 					   printableDouble(price));			
 			System.out.println("+------------------------------------------------+");		
@@ -141,7 +141,7 @@ public class TffExperienceEvent extends TffEvent {
 						System.out.println("+---------------------TICKET---------------------+");
 						System.out.println("                     [REFUND]");
 						System.out.println(" Attendee: " + name);
-						System.out.println(" Event: " + super.getName()  + "  [ID: " + this.id + " ]");
+						System.out.println(" Event: " + super.getName()  + "  [ ID: " + this.id + " ]");
 						System.out.println(" Ticket Type: " + capitalize(ticketType) + "  \t@ $" + 
 								   printableDouble(price));
 						System.out.println("                     [REFUND]");
