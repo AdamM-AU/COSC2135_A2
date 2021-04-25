@@ -27,6 +27,11 @@ public class StageC {
 			System.out.println("Maximum Number of Events: ");
 			userInput = consoleInput.nextLine();
 			System.out.println("");
+			
+			if (!userInput.matches("^[0-9]+$")) {
+				System.out.println("Error: Only whole numbers can be accepted!");
+				System.out.println("");
+			}
 		}
 		// Store the Max # of Events
 		maxEvents = Integer.parseInt(userInput);
@@ -38,7 +43,7 @@ public class StageC {
 		initialized = true;
 	}
 	
-	// Main() Method
+	/* Main() Method */
 	public static void main(String[] args) {
 		String userInput = "";
 		
@@ -115,6 +120,7 @@ public class StageC {
 		System.out.println("  X: Exit");	
 	}
 	
+	/* Display all available events */
 	public static void displayEvents() {
 		String userInput;
 		System.out.println("**** Event - List ****");
@@ -138,7 +144,7 @@ public class StageC {
 		
 	}
 	
-	// Input handler for creating TffEvents
+	/* Input handler for creating TffEvents */
 	public static void consoleEventAdd() {
 		Object[] inputStorage = new Object[7];
 		String userInput = "";
@@ -153,6 +159,11 @@ public class StageC {
 			while(!userInput.toLowerCase().contains("venue") && !userInput.toLowerCase().contains("experience")) {
 				System.out.println("Event Type: [Venue, Experience] ");
 				userInput = consoleInput.nextLine();
+				
+				if (!userInput.toLowerCase().contains("venue") && !userInput.toLowerCase().contains("experience")) {
+					System.out.println("");
+					System.out.println("Error: Expected Values are [ Venue ] and [ Experience ]");
+				}
 			}
 			inputStorage[5] = userInput;
 			
@@ -166,9 +177,14 @@ public class StageC {
 
 			// Check if input string is decimal or integer (REGEX)
 			userInput = ""; // Reset userInput
-			while (!userInput.matches("^[0-9]+$") && !userInput.matches("^\\d+\\.\\d+")) {
+			while (!userInput.matches("^[0-9]+$")) {
 				System.out.print("Ticket Limit: ");
 				userInput = consoleInput.nextLine();
+				
+				if (!userInput.matches("^[0-9]+$")) {
+					System.out.println("Error: Only whole numbers can be accepted!");
+					System.out.println("");
+				}
 			}
 			inputStorage[6] = Integer.parseInt(userInput);
 			System.out.println("");			
@@ -181,7 +197,8 @@ public class StageC {
 				userInput = consoleInput.nextLine();
 				
 				if (!userInput.matches("^[0-9]+$") && !userInput.matches("^\\d+\\.\\d+")) {
-					System.out.println("Error: Expected whole number or whole number with decimals [1, 1.00]");
+					System.out.println("  Error: Expected whole number or whole number with decimals [1, 1.00]");
+					System.out.println("");
 				}
 			}
 			inputStorage[2] = Double.parseDouble(userInput);
@@ -193,7 +210,8 @@ public class StageC {
 				userInput = consoleInput.nextLine();
 				
 				if (!userInput.matches("^[0-9]+$") && !userInput.matches("^\\d+\\.\\d+")) {
-					System.out.println("Error: Expected whole number or whole number with decimals [1, 1.00]");
+					System.out.println("  Error: Expected whole number or whole number with decimals [1, 1.00]");
+					System.out.println("");
 				}
 			}
 			inputStorage[3] = Double.parseDouble(userInput);
@@ -205,7 +223,8 @@ public class StageC {
 				userInput = consoleInput.nextLine();
 				
 				if (!userInput.matches("^[0-9]+$") && !userInput.matches("^\\d+\\.\\d+")) {
-					System.out.println("Error: Expected whole number or whole number with decimals [1, 1.00]");
+					System.out.println("  Error: Expected whole number or whole number with decimals [1, 1.00]");
+					System.out.println("");
 				}
 			}
 				inputStorage[4] = Double.parseDouble(userInput);
@@ -242,6 +261,11 @@ public class StageC {
 			while (!userInput.matches("^[0-9]+$")) {
 				System.out.print("Event ID: ");
 				userInput = consoleInput.nextLine().toLowerCase();
+				
+				if (!userInput.matches("^[0-9]+$")) {
+					System.out.println("Error: Only whole numbers can be accepted!");
+					System.out.println("");
+				}
 			}
 			eventID = Integer.parseInt(userInput);
 			eventExists = eventExists(eventID);
@@ -274,6 +298,7 @@ public class StageC {
 			
 			if (!userInput.matches("^[0-9]+$")) {
 				System.out.println("Error: Only whole numbers can be accepted!");
+				System.out.println("");
 			}
 		}
 		ticketsReq = Integer.parseInt(userInput);
@@ -287,9 +312,22 @@ public class StageC {
 			// Loop to process tickets
 			ticketData[i][0] = Integer.toString(currentOBJ.getId());
 			
-			System.out.println("Ticket Type: [Adult, Child, Concession]");
-			ticketData[i][1] = consoleInput.nextLine().toLowerCase();
-			System.out.println("");
+			userInput = "";
+			while (!userInput.toLowerCase().matches("adult") && !userInput.toLowerCase().matches("child") &&
+				   !userInput.toLowerCase().matches("concession")) {
+				
+				System.out.println("Ticket Type: [Adult, Child, Concession]");
+				userInput = consoleInput.nextLine();
+				System.out.println("");
+				
+				if (!userInput.toLowerCase().matches("adult") && !userInput.toLowerCase().matches("child") &&
+					!userInput.toLowerCase().matches("concession")) {
+					System.out.println("Error: Expected Values are [ Adult ] , [ Child ] and [ Concession ]");
+					System.out.println("");
+				}
+			}
+			
+			ticketData[i][1] = userInput.toLowerCase();
 			
 			System.out.println("Name for Booking: ");
 			ticketData[i][2] = consoleInput.nextLine();
@@ -323,12 +361,19 @@ public class StageC {
 			while (!userInput.matches("^[0-9]+$")) {
 				System.out.print("Event ID: ");
 				userInput = consoleInput.nextLine().toLowerCase();
+				
+				if (!userInput.matches("^[0-9]+$")) {
+					System.out.println("Error: Only whole numbers can be accepted!");
+					System.out.println("");
+				}
 			}
 			eventID = Integer.parseInt(userInput);
 			eventExists = eventExists(eventID);
 			userInput = "";
 			if (!eventExists) {
 				System.out.println("Error: Event Not Found!");
+				System.out.println("");
+				return;
 			}
 		}
 		
@@ -357,12 +402,19 @@ public class StageC {
 			while (!userInput.matches("^[0-9]+$")) {
 				System.out.print("Event ID: ");
 				userInput = consoleInput.nextLine().toLowerCase();
+				
+				if (!userInput.matches("^[0-9]+$")) {
+					System.out.println("Error: Only whole numbers can be accepted!");
+					System.out.println("");
+				}
 			}
 			eventID = Integer.parseInt(userInput);
 			eventExists = eventExists(eventID);
 			userInput = "";
 			if (!eventExists) {
 				System.out.println("Error: Event Not Found!");
+				System.out.println("");
+				return;
 			}
 		}
 		if (eventExists) {
@@ -387,7 +439,7 @@ public class StageC {
 	}
 
 
-	// Confirm or deny the existence of an eventID
+	/* Confirm or deny the existence of an eventID */
 	public static boolean eventExists(int eventID) {
 		if (eventID > tffEvents.length) {
 			return false;

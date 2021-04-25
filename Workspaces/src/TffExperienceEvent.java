@@ -18,6 +18,11 @@ public class TffExperienceEvent extends TffEvent {
 		this.bookings = new String[ticketLimit][2];
 	}
 	
+	/* 
+	 * Spec Requirement
+	 * bookEvent()
+	 * Creates a booking and stores the ticket information
+	 */	
 	@Override
 	public boolean bookEvent(String ticketType, String name) {
 		double price;
@@ -63,7 +68,7 @@ public class TffExperienceEvent extends TffEvent {
 	
 	/* 
 	 * Spec Requirement
-	 * Print Event Data
+	 * Print available events and associated information
 	 */
 	@Override
 	public void displayEvent() {
@@ -81,6 +86,9 @@ public class TffExperienceEvent extends TffEvent {
 		
 	}
 	
+	/*
+	 * Returns Bookings for the current event
+	 */
 	public void displayBookings() {
 		for(int i = 0; i < bookings.length; i++) {
 			double price;
@@ -95,9 +103,8 @@ public class TffExperienceEvent extends TffEvent {
 					price = super.getPriceAdult();
 				}	
 				
-				String leftAlignFormat = "| %-2s | %-18s | %-18s | %-9s |%n";
+				String leftAlignFormat = "| %-18s | %-18s | %-9s |%n";
 				System.out.format(leftAlignFormat,
-								  i,
 							  	  bookings[i][0], 
 							  	  capitalize(bookings[i][1]),
 							  	  price);
@@ -105,6 +112,10 @@ public class TffExperienceEvent extends TffEvent {
 		}
 	}
 	
+	/*
+	 * Deletes a booking an issues a refund for current event
+	 * rebuilds the booking array to remove empty rows
+	 */	
 	public boolean unBookEvent(String name) {
 		if (type.toLowerCase().matches("experience")) {
 			// Check if the we have a matching valid ticket
